@@ -1,54 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-//var app = {
-//    // Application Constructor
-//    initialize: function() {
-//        this.bindEvents();
-//    },
-//    // Bind Event Listeners
-//    //
-//    // Bind any events that are required on startup. Common events are:
-//    // 'load', 'deviceready', 'offline', and 'online'.
-//    bindEvents: function() {
-//        document.addEventListener('deviceready', this.onDeviceReady, false);
-//    },
-//    // deviceready Event Handler
-//    //
-//    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-//    // function, we must explicitly call 'app.receivedEvent(...);'
-//    onDeviceReady: function() {
-//        app.receivedEvent('deviceready');
-//    },
-//    // Update DOM on a Received Event
-//    receivedEvent: function(id) {
-//        var parentElement = document.getElementById(id);
-//        var listeningElement = parentElement.querySelector('.listening');
-//        var receivedElement = parentElement.querySelector('.received');
-//
-//        listeningElement.setAttribute('style', 'display:none;');
-//        receivedElement.setAttribute('style', 'display:block;');
-//
-//        console.log('Received Event: ' + id);
-//    }
-//};
-//
-//app.initialize();
 function login(){
     
     
@@ -57,8 +6,8 @@ function login(){
     var password=$("#password").val();
     var client = new XMLHttpRequest();
     client.open("GET", endPoint, false);
-    client.setRequestHeader("X-Auth-User", "130788542221063063@ecstestdrive.emc.com");
-    client.setRequestHeader("X-Auth-Key", "Password123");
+    client.setRequestHeader("X-Auth-User", userId);
+    client.setRequestHeader("X-Auth-Key", password);
     client.setRequestHeader("Accept", "application/json");
     client.setRequestHeader("Access-Control-Allow-Origin", "*");
     client.send();
@@ -76,6 +25,9 @@ function login(){
 
 function list(){
     $("#function").hide();
+    $("#listObjectsOption").hide();
+    $("#uploadFile").hide();
+    
     var endPoint=window.localStorage.getItem("api");
     var authtoken=window.localStorage.getItem("swift-token");
     var client = new XMLHttpRequest();
@@ -87,7 +39,7 @@ function list(){
     console.log(list[0].name);
     var content="<table>";
     for( var i=0;i<list.length;i++){
-        content+="<tr><td> Hello "+list[i].name+"</tr></td>";
+        content+="<tr><td> "+list[i].name+"</tr></td>";
     }
     content += "</table>";
     $("#function").show();
@@ -100,13 +52,25 @@ function showUpload(){
     
     
     $("#function").hide();
+    $("#listObjectsOption").hide();
     $("#uploadFile").show();
     
 }
 
-function uploadFile(fileslist){
+function showListObjects(){
     
+    
+    $("#function").hide();
+    $("#uploadFile").hide();
+    $("#listObjectsOption").show();
+    
+}
+
+
+function uploadFile(fileslist){
+    $("#function").empty();
     var file;
+    var bucketName=$("#bucketName").val();
     for(var i=0;i<fileslist.length;i++){
         
         file=fileslist[i];
@@ -122,14 +86,62 @@ function uploadFile(fileslist){
     var endPoint=window.localStorage.getItem("api");
     var authtoken=window.localStorage.getItem("swift-token");
     var fileName=file.name;
-    console.log(endPoint+"/sample/"+file.name);
+    console.log(endPoint+"/"+bucketName+"/"+file.name);
+    
+    var head= new XMLHttpRequest();
+    
+    head.open("HEAD", endPoint+"/"+bucketName, false);
+    head.setRequestHeader("Accept", "application/json");
+    head.setRequestHeader("X-Auth-Token", authtoken);
+    head.send();
+    var content="";
+    if(head.status==204 || head.status==200){
+        
+        var client = new XMLHttpRequest();
+        client.open("PUT", endPoint+"/"+bucketName+"/"+fileName, false);
+        client.setRequestHeader("Accept", "application/json");
+        client.setRequestHeader("X-Auth-Token", authtoken);
+        client.send(file);
+        content="<h1>Object Written Successfully</h1>";
+        
+        
+    }else{
+        content="<h1>Bucket Does not exist</h1>";
+        
+    }
+    
+    $("#function").show();
+    $('#function').append(content);
+    
+}
+
+
+function listObjects(){
+    $("#function").empty();
+    var endPoint=window.localStorage.getItem("api");
+    var authtoken=window.localStorage.getItem("swift-token");
+    
+    var bucketName=$("#containerName").val();
+    console.log(endPoint+"/"+bucketName);
     var client = new XMLHttpRequest();
-    client.open("PUT", endPoint+"/sample/"+fileName, false);
+    client.open("GET", endPoint+"/"+bucketName, false);
     client.setRequestHeader("Accept", "application/json");
     client.setRequestHeader("X-Auth-Token", authtoken);
-    client.send(file);
-    console.log(client.responseText);
-    console.log(client.status);
-    
-    
+    client.send();
+    var content="";
+    if(client.status>399){
+        
+        content="<h1>Bucket Not Found</h1>";
+        
+    }	else{
+        var list=JSON.parse(client.responseText);
+        var content="<table border=1 >  <tr><td>Name</td><td>File Type</td><td>Size in Bytes</td><td>Last Modified</td></tr>";
+        for( var i=0;i<list.length;i++){
+            content+="<tr><td>"+list[i].name+"</td><td>"+list[i].content_type+"</td><td>"+list[i].bytes+"</td><td>"+list[i].last_modified+"</td></tr>";
+        }
+        content += "</table>";
+        
+    }
+    $("#function").show();
+    $('#function').append(content);	
 }
