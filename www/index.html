@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.43.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        
+
+    </head>
+    <body>
+        <h1>HEllo ECS</h1>
+        
+        <div id="config">
+            <input type="text" id="endPoint" >End Point</input></br>
+            <input type="text" id="uid" name="uid">UID</input></br>
+            <input type="text" id="password" name="password">Password</input></br>
+            
+            <input type="button" id="login" value="login" onclick="login()"></input>
+        </div>
+        
+        <div id="menu" style="display:none;">
+            <input type="button" name="list" id="list" value="list" onclick="list()"></input>
+            <input type="button" name="upload" id="upload" value="upload" onclick="showUpload()"></input>
+            <input type="button" name="list" id="upload" value="download"></input>
+            
+        </div>
+        
+        <div id="uploadFile" style="display:none;">
+            <input type="file" name="upload" multiple id="upload" onchange="uploadFile(this.files)"></input>
+            <!-- <input type="button" value="upload" onclick="uploadFile()"></input> -->
+            
+        </div>
+        
+        <div id="function" style="display:none;">
+            
+            
+        </div>
+
+    </body>
+</html>
