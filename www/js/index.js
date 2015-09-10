@@ -6,8 +6,8 @@ function login(){
     var password=$("#password").val();
     var client = new XMLHttpRequest();
     client.open("GET", endPoint, false);
-    client.setRequestHeader("X-Auth-User", "130788542221063063@ecstestdrive.emc.com");
-    client.setRequestHeader("X-Auth-Key", "Password123");
+    client.setRequestHeader("X-Auth-User", userId);
+    client.setRequestHeader("X-Auth-Key", password);
     client.setRequestHeader("Accept", "application/json");
     client.setRequestHeader("Access-Control-Allow-Origin", "*");
     client.send();
