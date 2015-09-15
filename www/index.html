@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 
 <html>
+    
+    <style type="text/css">
+        
+        .centerdiv {
+            position:absolute;
+            top: 50%;
+            left: 50%;
+            width:30em;
+            height:18em;
+            margin-top: -9em; /*set to a negative number 1/2 of your height*/
+            margin-left: -15em; /*set to a negative number 1/2 of your width*/
+            
+        }
+    
+        </style>
+    
     <head>
         <meta charset="UTF-8">
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.43.min.js"></script>
@@ -14,13 +30,19 @@
             </script>
 
     </head>
-<<<<<<< HEAD
+
     <body bgcolor="MediumPurple">
-       <div id="welcome" align="center"> <h1>Welcome To ECS Test Drive</h1></div>
-=======
+       <div id="welcome" align="center">
+           <h1>Welcome To ECS Test Drive</h1>
+       
+       
+       <div style="text-align: center;"><IMG SRC="img/ECS.jpeg" ALT="image"></div>
+       
+       </div>
+
     <body>
-        <h1>Welcome to ECS Test Drive</h1>
->>>>>>> e9ea478b7c34bddbc2f2610a2f359545afba676d
+       
+
         
         <div id="config" style="display:none" align="center">
             <h1>Please enter your Swift Credentials</h1>
@@ -64,27 +86,85 @@
             </table>
         </div>
         
-        <div id="menu" style="display:none;" align="center">
-            <input type="button" name="list" id="list" value="listBuckets" onclick="list()"></input>
-            <input type="button" name="upload" id="upload" value="upload" onclick="showUpload()"></input>
-            <input type="button" name="list" id="listObjects" value="listObjects" onclick="showListObjects()"></input>
+        <div class="unauthorised" id="unauthorised" style="display:none;" align="center">
+            
+            
+            <h1>Please check your credentials</h1>
             
         </div>
         
-        <div id="uploadFile" style="display:none;">
+        <!-- Menu starts -->
+        <div id="menu" style="display: none;" align="center">
+            <h1>Select your function here</h1>
+            <input type="button" name="list" id="list" value="listBuckets"
+                onclick="list()"></input>
+            
+            <input type="button" name="upload"
+                id="upload" value="createObject" onclick="getView('upload')"></input>
+            
+            <input
+                type="button" name="list" id="listObjects" value="listObjects"
+                onclick="getView('listObjects')"></input>
+            
+            <input type="button" name="createBucket" id="createBucket" value="CreateBucket" onclick="getView('createBucket')"></input>
+            <input type="button" name="deleteObject" id="deleteObject" value="DeleteObject" onclick="getView('deleteObject')"></input>
+            <input type="button" name="deleteBucket" id="deleteBucket" value="DeleteBucket" onclick="getView('deleteBucket')"></input>
+            
+            
+            
+        </div>
+        
+        <!-- Menu Ends -->
+        
+        <!-- Div for Function Starts -->
+        
+        <div class="mydiv" id="uploadView" style="display: none;">
             <input type="text" name="bucketName" id="bucketName" required>BucketName</input>
-            </br>
-            <input type="file" name="upload" multiple id="upload" onchange="uploadFile(this.files)"></input>
+            </br> <input type="file" name="upload" multiple id="upload"
+                onchange="uploadFile(this.files)"></input>
             <!-- <input type="button" value="upload" onclick="uploadFile()"></input> -->
             
         </div>
         
-        <div id="listObjectsOption" style="display:none;">
-            <input type="text" name="containerName" id="containerName" required>BucketName</input>
-            <input type="button" name="listObject" id="listFiles" value="List Objects" onclick="listObjects()"></input>
-            </br>
+        
+        <div id="listObjectsView" style="display: none;">
+            <input type="text" name="containerName" id="containerName" required>BucketName</input></br>
+            <input type="button" name="listObjects" id="listObjects"
+                value="List Objects" onclick="listObjects()"></input> </br>
             
         </div>
+        
+        
+        
+        <div id="createBucketView" style="display: none;">
+            <input type="text" name="containerName" id="createContainerName"
+                required>BucketName</input></br>
+            <input type="button"
+                value="Create Bucket" id="createBucket" onclick="createBucket()"></input> </br>
+        </div>
+        
+        
+        
+        <div id="deleteBucketView" style="display: none;">
+            
+            <input type="text" name="deleteBucket" id="deleteBucketName" required>BucketName</input></br>
+            <input type="button"
+                value="Delete Bucket" id="deleteBucket" onclick="deleteBucket()"></input> </br>
+            
+        </div>
+        
+        
+        
+        
+        <div id="deleteObjectView" style="display: none;">
+            <input type="text" name="deleteBucket" id="bucketObjectName" required>BucketName</input></br>
+            <input type="text" name="deleteObject" id="deleteObjectName" required>ObjectName</input>
+            <input type="button" 
+                value="Delete Object" id="deleteObject" onclick="deleteObject()"></input> </br>
+        </div>
+        
+        
+        <!-- Div for Function Ends -->
         
         <div id="function" style="display:none;">
             
