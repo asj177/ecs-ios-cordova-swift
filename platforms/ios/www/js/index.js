@@ -1,8 +1,6 @@
-<<<<<<< HEAD
-=======
+
 var div_views=["uploadView","listObjectsView","createBucketView","deleteBucketView","deleteObjectView"];
 
->>>>>>> 5fed1240809f81857ee4511fe9cfddc0020ca081
 function login(){
     
     
