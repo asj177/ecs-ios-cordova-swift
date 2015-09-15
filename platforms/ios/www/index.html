@@ -1,37 +1,174 @@
 <!DOCTYPE html>
 
 <html>
+    
+    <style type="text/css">
+        
+        .centerdiv {
+            position:absolute;
+            top: 50%;
+            left: 50%;
+            width:30em;
+            height:18em;
+            margin-top: -9em; /*set to a negative number 1/2 of your height*/
+            margin-left: -15em; /*set to a negative number 1/2 of your width*/
+            
+        }
+    
+        </style>
+    
     <head>
         <meta charset="UTF-8">
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.43.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+<<<<<<< HEAD
         
+=======
+        <script type="text/javascript">
+            $(document).ready(function() {
+                              $('#welcome').delay(6000).fadeOut(100);
+                              $('#config').delay(6000).fadeIn(100);
+                              });
+            </script>
+>>>>>>> 5fed1240809f81857ee4511fe9cfddc0020ca081
 
     </head>
+
+    <body bgcolor="MediumPurple">
+       <div id="welcome" align="center">
+           <h1>Welcome To ECS Test Drive</h1>
+       
+       
+       <div style="text-align: center;"><IMG SRC="img/ECS.jpeg" ALT="image"></div>
+       
+       </div>
+
     <body>
-        <h1>HEllo ECS</h1>
+       
+
         
-        <div id="config">
-            <input type="text" id="endPoint" >End Point</input></br>
-            <input type="text" id="uid" name="uid">UID</input></br>
-            <input type="text" id="password" name="password">Password</input></br>
-            
-            <input type="button" id="login" value="login" onclick="login()"></input>
+        <div id="config" style="display:none" align="center">
+            <h1>Please enter your Swift Credentials</h1>
+            <table>
+                
+                
+                <tr>
+                    <td>
+                        <input type="text" id="endPoint" >
+                        </input>
+                    </td>
+                    <td>
+                        End Point
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td>
+                        <input type="text" id="uid" name="uid"></input>
+                    </td>
+                    <td>
+                        UID
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="password" name="password">
+                        </input>
+                    </td>
+                    <td>
+                        Password
+                    </td>
+                    <tr>
+                        <td>
+                            
+                            <input type="button" id="login" value="login" onclick="login()"></input>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+            </table>
         </div>
         
-        <div id="menu" style="display:none;">
-            <input type="button" name="list" id="list" value="list" onclick="list()"></input>
-            <input type="button" name="upload" id="upload" value="upload" onclick="showUpload()"></input>
-            <input type="button" name="list" id="upload" value="download"></input>
+        <div class="unauthorised" id="unauthorised" style="display:none;" align="center">
+            
+            
+            <h1>Please check your credentials</h1>
             
         </div>
         
-        <div id="uploadFile" style="display:none;">
-            <input type="file" name="upload" multiple id="upload" onchange="uploadFile(this.files)"></input>
+        <!-- Menu starts -->
+        <div id="menu" style="display: none;" align="center">
+            <h1>Select your function here</h1>
+            <input type="button" name="list" id="list" value="listBuckets"
+                onclick="list()"></input>
+            
+            <input type="button" name="upload"
+                id="upload" value="createObject" onclick="getView('upload')"></input>
+            
+            <input
+                type="button" name="list" id="listObjects" value="listObjects"
+                onclick="getView('listObjects')"></input>
+            
+            <input type="button" name="createBucket" id="createBucket" value="CreateBucket" onclick="getView('createBucket')"></input>
+            <input type="button" name="deleteObject" id="deleteObject" value="DeleteObject" onclick="getView('deleteObject')"></input>
+            <input type="button" name="deleteBucket" id="deleteBucket" value="DeleteBucket" onclick="getView('deleteBucket')"></input>
+            
+            
+            
+        </div>
+        
+        <!-- Menu Ends -->
+        
+        <!-- Div for Function Starts -->
+        
+        <div class="mydiv" id="uploadView" style="display: none;">
+            <input type="text" name="bucketName" id="bucketName" required>BucketName</input>
+            </br> <input type="file" name="upload" multiple id="upload"
+                onchange="uploadFile(this.files)"></input>
             <!-- <input type="button" value="upload" onclick="uploadFile()"></input> -->
             
         </div>
+        
+        
+        <div id="listObjectsView" style="display: none;">
+            <input type="text" name="containerName" id="containerName" required>BucketName</input></br>
+            <input type="button" name="listObjects" id="listObjects"
+                value="List Objects" onclick="listObjects()"></input> </br>
+            
+        </div>
+        
+        
+        
+        <div id="createBucketView" style="display: none;">
+            <input type="text" name="containerName" id="createContainerName"
+                required>BucketName</input></br>
+            <input type="button"
+                value="Create Bucket" id="createBucket" onclick="createBucket()"></input> </br>
+        </div>
+        
+        
+        
+        <div id="deleteBucketView" style="display: none;">
+            
+            <input type="text" name="deleteBucket" id="deleteBucketName" required>BucketName</input></br>
+            <input type="button"
+                value="Delete Bucket" id="deleteBucket" onclick="deleteBucket()"></input> </br>
+            
+        </div>
+        
+        
+        
+        
+        <div id="deleteObjectView" style="display: none;">
+            <input type="text" name="deleteBucket" id="bucketObjectName" required>BucketName</input></br>
+            <input type="text" name="deleteObject" id="deleteObjectName" required>ObjectName</input>
+            <input type="button" 
+                value="Delete Object" id="deleteObject" onclick="deleteObject()"></input> </br>
+        </div>
+        
+        
+        <!-- Div for Function Ends -->
         
         <div id="function" style="display:none;">
             
